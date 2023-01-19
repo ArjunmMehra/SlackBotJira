@@ -32,6 +32,9 @@ bot.on('message', (data) => {
                     case constants.CREATE_TICKET:
                     createTicket(data.channel);
                     break;
+                    case constants.LIST_ISSUE_TYPE:
+                    listOptions(data.channel);
+                    break;
                     default:
                     defaultMessage();
             }
@@ -62,5 +65,50 @@ const result  = jiraService.createTicket();
         channel,
         slackMessageBuilders.createdMessage(),
         result
+    );
+}
+function listOptions(channel){
+    const param = {"attachments":[
+        {
+          "callback_id": "pick_channel_for_fun",
+          "text": "Choose a channel",
+          "id": 1,
+          "color": "2b72cb",
+          "actions": [
+            {
+              "name": "subject_list",
+              "text": "Select one",
+              "type": "select",
+              "options": [
+                {
+                  "text": "Anti Racism",
+                  "value": "anti_racism"
+                },
+                {
+                  "text": "Anti Sexism",
+                  "value": "anti_sexism"
+                },
+                {
+                  "text": "LGBTQ+ Allyship",
+                  "value": "lgbtq_allyship"
+                },
+                {
+                  "text": "Autism allyship",
+                  "value": "autism_allyship"
+                }
+              ]
+            }
+        ],
+          "fallback":"Choose a channel"
+        }
+      ],
+    }
+    bot.postMessage(
+        channel,
+        'list',
+        param,
+        function(data){
+            console.log(data);
+        }
     );
 }
