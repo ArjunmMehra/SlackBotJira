@@ -1,7 +1,10 @@
 const SlackBot = require('slackbots');
+const dotenv = require('dotenv')
+
+dotenv.config();
 
 const bot = new SlackBot({
-  token: "add token in env variables",
+  token: `${process.env.SLACK_BOT_TOKEN}`,
   name: 'Hello Bot'
 });
 
