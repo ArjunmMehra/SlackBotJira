@@ -1,7 +1,7 @@
 const SlackBot = require('slackbots');
 
 const bot = new SlackBot({
-  token: 'xoxb-4652388056438-4689895792400-CDNTdQ8B06vuA4TC52u6b4t2',
+  token: "add token in env variables",
   name: 'Hello Bot'
 });
 
