@@ -1,0 +1,27 @@
+{
+  "name": "slackbotjira",
+  "version": "1.0.0",
+  "description": "A bot to connect with JIRA",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArjunmMehra/SlackBotJira.git"
+  },
+  "keywords": [
+    "Slack",
+    "Bot",
+    "Jira"
+  ],
+  "author": "arjunmehra20@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArjunmMehra/SlackBotJira/issues"
+  },
+  "homepage": "https://github.com/ArjunmMehra/SlackBotJira#readme",
+  "devDependencies": {
+    "slackbots": "^1.3.0"
+  }
+}
