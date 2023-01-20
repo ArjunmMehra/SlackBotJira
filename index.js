@@ -5,6 +5,17 @@ const setupSlackBot = require('./src/setup/setupSlackBot');
 const jiraService = require('./src/services/JiraServices');
 const config = setupConfig();
 const bot = setupSlackBot(config);
+const express = require('express');
+const app = express();
+require('dotenv').config();
+
+//api to handle interactive response
+app.get('/bot', (req, res) => {
+console.log(req)
+res.send([{ name: 'Item 1' }, { name: 'Item 2' }]);
+});
+
+app.listen(process.env.SERVICE_PORT, () => console.log(`Server started on port ${process.env.SERVICE_PORT}`));
 
 bot.on('start', () => {
     console.log('Bot started!');
@@ -46,6 +57,20 @@ bot.on('message', (data) => {
 
 });
 
+bot.on("interactive_message_callback", function(data) {
+    var callbackId = data.callback_id;
+    var actionValue = data.actions[0].value;
+    if (callbackId === "wopr_game") {
+        if (actionValue === "option1") {
+            bot.postMessage(data.channel, 'You selected option 1, this is what I will do...');
+        } else if (actionValue === "option2") {
+            bot.postMessageToUser(data.channel, 'You selected option 2, this is what I will do...');
+        } else if (actionValue === "option3") {
+            bot.postMessageToUser(data.channel, 'You selected option 3, this is what I will do...');
+        }
+    }
+});
+
 function welcomeMessage(channel) {
     bot.postMessage(
         channel,
@@ -68,47 +93,40 @@ const result  = jiraService.createTicket();
     );
 }
 function listOptions(channel){
-    const param = {"attachments":[
-        {
-          "callback_id": "pick_channel_for_fun",
-          "text": "Choose a channel",
-          "id": 1,
-          "color": "2b72cb",
-          "actions": [
-            {
-              "name": "subject_list",
-              "text": "Select one",
-              "type": "select",
-              "options": [
+    bot.postMessageToChannel(
+        'gl-ideathon',
+        'Hello! How can I help you?', {
+            "attachments": [
                 {
-                  "text": "Anti Racism",
-                  "value": "anti_racism"
-                },
-                {
-                  "text": "Anti Sexism",
-                  "value": "anti_sexism"
-                },
-                {
-                  "text": "LGBTQ+ Allyship",
-                  "value": "lgbtq_allyship"
-                },
-                {
-                  "text": "Autism allyship",
-                  "value": "autism_allyship"
+                    "text": "Please select an option:",
+                    "fallback": "You are unable to choose a game",
+                    "callback_id": "wopr_game",
+                    "color": "#3AA3E3",
+                    "attachment_type": "default",
+                    "actions": [
+                        {
+                            "name": "game",
+                            "text": "Select...",
+                            "type": "select",
+                            "options": [
+                                {
+                                    "text": "Option 1",
+                                    "value": "option1"
+                                },
+                                {
+                                    "text": "Option 2",
+                                    "value": "option2"
+                                },
+                                {
+                                    "text": "Option 3",
+                                    "value": "option3"
+                                }
+                            ]
+                        }
+                    ]
                 }
-              ]
-            }
-        ],
-          "fallback":"Choose a channel"
-        }
-      ],
-    }
-    bot.postMessage(
-        channel,
-        'list',
-        param,
-        function(data){
+            ]
+        }, function(data){
             console.log(data);
-        }
-    );
+        });
 }

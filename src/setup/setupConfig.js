@@ -1,13 +1,13 @@
 'use strict';
 
 const validateConfig = require('./validateConfig');
-const {TOKEN} = require('../../tokens/token');
+require('dotenv').config();
 
 module.exports = () => {
     let config = {
         botName: 'Fab 5',
         templates: [],
-        slackToken: TOKEN,
+        slackToken: process.env.TOKEN,
         debug: true,
     };
     validateConfig(config);
