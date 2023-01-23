@@ -4,7 +4,8 @@ const serverless = require("serverless-http");
 const app = express();
 const router = express.Router();
 // hosted URL  : http://localhost:9000/.netlify/functions/api
-router.get("/", (req, res) => {
+router.post("/", (req, res) => {
+console.log(req);
   res.json({
     hello: "hi!"
   });
