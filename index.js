@@ -5,6 +5,9 @@ const setupSlackBot = require('./src/setup/setupSlackBot');
 const jiraService = require('./src/services/JiraServices');
 const config = setupConfig();
 const bot = setupSlackBot(config);
+const express = require('express');
+const app = express();
+require('dotenv').config();
 
 bot.on('start', () => {
     console.log('Bot started!');
@@ -25,9 +28,11 @@ bot.on('message', (data) => {
             data.text.startsWith('<@' + bot.self.id + '>')) {
 
             let args = data.text.split(' ');
+            console.log(data);
             switch (args[1].toLowerCase()) {
                 case constants.WELCOME_COMMAND:
                     welcomeMessage(data.channel);
+                    listBotOptions(data.channel, data.user);
                     break;
                     case constants.CREATE_TICKET:
                     createTicket(data.channel);
@@ -37,6 +42,8 @@ bot.on('message', (data) => {
                     break;
                     case constants.LIST_ISSUE_TYPE:
                     listOptions(data.channel);
+                    case constants.GET_DATA:
+                    getTicketData(data.channel);
                     break;
                     default:
                     defaultMessage();
@@ -113,13 +120,14 @@ function listOptions(channel){
           "fallback":"Choose a channel"
         }
       ],
-    }
+    }}
+function listBotOptions(channel,user){
     bot.postMessage(
         channel,
-        'list',
-        param,
-        function(data){
-            console.log(data);
-        }
-    );
+        'Hello! How can I help you?', slackMessageBuilders.listBotMessage(user));
+}
+function getTicketData(channel){
+    bot.postMessage(
+        channel,
+        'Hello! How can I help you?', slackMessageBuilders.ticketFormMessage());
 }
