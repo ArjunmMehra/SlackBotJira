@@ -6,6 +6,7 @@ module.exports = {
 
     WELCOME_COMMAND: 'hi',
     CREATE_TICKET: 'create',
+    GET_TICKET: 'get',
     LIST_ISSUE_TYPE: 'list',
 
     ERROR_SLACK_TOKEN: 'Slack Token (slackToken) must be specified',

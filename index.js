@@ -32,6 +32,9 @@ bot.on('message', (data) => {
                     case constants.CREATE_TICKET:
                     createTicket(data.channel);
                     break;
+                    case constants.GET_TICKET:
+                    getTaskDetails(data.channel);
+                    break;
                     case constants.LIST_ISSUE_TYPE:
                     listOptions(data.channel);
                     break;
@@ -59,14 +62,22 @@ function defaultMessage(channel) {
         slackMessageBuilders.defaultMessage(config.templates)
     );
 }
-function createTicket(channel) {
-const result  = jiraService.createTicket();
+async function createTicket(channel) {
+const result  = await jiraService.createTicket();
     bot.postMessage(
         channel,
         slackMessageBuilders.createdMessage(),
         result
     );
 }
+async function getTaskDetails(channel) {
+  const result  = await jiraService.getTaskDetails();
+      bot.postMessage(
+          channel,
+          slackMessageBuilders.getTaskMessage(),
+          result
+      );
+  }
 function listOptions(channel){
     const param = {"attachments":[
         {
