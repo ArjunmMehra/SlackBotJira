@@ -5,8 +5,6 @@ const setupSlackBot = require('./src/setup/setupSlackBot');
 const jiraService = require('./src/services/JiraServices');
 const config = setupConfig();
 const bot = setupSlackBot(config);
-const express = require('express');
-const app = express();
 require('dotenv').config();
 
 bot.on('start', () => {
