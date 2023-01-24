@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js ./node_modules/.bin/netlify-lambda serve src",
-    "build": "./node_modules/.bin/netlify-lambda build src && node start",
+    "build": "./node_modules/.bin/netlify-lambda build src && node index.js",
     "build1": "node index.js ./node_modules/.bin/netlify-lambda build src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
