@@ -11,6 +11,8 @@
   },
   "author": "Team Fab5",
   "dependencies": {
+    "axios": "^1.2.3",
+    "jira": "^0.9.2",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "netlify-lambda": "^2.0.15",

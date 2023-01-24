@@ -6,6 +6,7 @@ module.exports = {
 
     WELCOME_COMMAND: 'hi',
     CREATE_TICKET: 'create',
+    GET_TICKET: 'get',
     LIST_ISSUE_TYPE: 'list',
     GET_DATA: 'form',
 

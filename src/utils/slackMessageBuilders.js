@@ -10,6 +10,9 @@ module.exports = {
     createdMessage() {
         return 'Ticket Created Successfully';
     },
+    getTaskMessage() {
+        return 'Task Details fetched Successfully';
+    },
     listBotMessage(user) {
         return {
             "blocks": [
