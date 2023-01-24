@@ -28,7 +28,6 @@ module.exports = {
                     "elements": [
                         {
                             "type": "button",
-                            "callback_id": "view_ticket",
                             "text": {
                                 "type": "plain_text",
                                 "emoji": true,
@@ -38,7 +37,6 @@ module.exports = {
                         },
                         {
                             "type": "button",
-                            "callback_id": "create_ticket",
                             "text": {
                                 "type": "plain_text",
                                 "emoji": true,
