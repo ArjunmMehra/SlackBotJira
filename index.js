@@ -37,6 +37,11 @@ bot.on('message', (data) => {
                     case constants.CREATE_TICKET:
                     createTicket(data.channel);
                     break;
+                    case constants.GET_TICKET:
+                    getTaskDetails(data.channel);
+                    break;
+                    case constants.LIST_ISSUE_TYPE:
+                    listOptions(data.channel);
                     case constants.GET_DATA:
                     getTicketData(data.channel);
                     break;
@@ -64,14 +69,58 @@ function defaultMessage(channel) {
         slackMessageBuilders.defaultMessage(config.templates)
     );
 }
-function createTicket(channel) {
-const result  = jiraService.createTicket();
+async function createTicket(channel) {
+const result  = await jiraService.createTicket();
     bot.postMessage(
         channel,
         slackMessageBuilders.createdMessage(),
         result
     );
 }
+async function getTaskDetails(channel) {
+  const result  = await jiraService.getTaskDetails();
+      bot.postMessage(
+          channel,
+          slackMessageBuilders.getTaskMessage(),
+          result
+      );
+  }
+function listOptions(channel){
+    const param = {"attachments":[
+        {
+          "callback_id": "pick_channel_for_fun",
+          "text": "Choose a channel",
+          "id": 1,
+          "color": "2b72cb",
+          "actions": [
+            {
+              "name": "subject_list",
+              "text": "Select one",
+              "type": "select",
+              "options": [
+                {
+                  "text": "Anti Racism",
+                  "value": "anti_racism"
+                },
+                {
+                  "text": "Anti Sexism",
+                  "value": "anti_sexism"
+                },
+                {
+                  "text": "LGBTQ+ Allyship",
+                  "value": "lgbtq_allyship"
+                },
+                {
+                  "text": "Autism allyship",
+                  "value": "autism_allyship"
+                }
+              ]
+            }
+        ],
+          "fallback":"Choose a channel"
+        }
+      ],
+    }}
 function listBotOptions(channel,user){
     bot.postMessage(
         channel,
