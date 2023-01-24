@@ -40,6 +40,7 @@ bot.on('message', (data) => {
                     break;
                     case constants.LIST_ISSUE_TYPE:
                     listOptions(data.channel);
+                    break;
                     case constants.GET_DATA:
                     getTicketData(data.channel);
                     break;
@@ -118,7 +119,11 @@ function listOptions(channel){
           "fallback":"Choose a channel"
         }
       ],
-    }}
+    }
+    bot.postMessage(
+      channel,
+      'Hello! How can I help you?', param);
+  }
 function listBotOptions(channel,user){
     bot.postMessage(
         channel,
