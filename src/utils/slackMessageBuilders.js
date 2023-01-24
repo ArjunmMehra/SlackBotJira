@@ -15,39 +15,68 @@ module.exports = {
     },
     listBotMessage(user) {
         return {
-            "blocks": [
+            "text": "Please choose froom below options",
+            "attachments": [
                 {
-                    "type": "section",
                     "text": {
                         "type": "mrkdwn",
                         "text": `*Hey There What would you like me to do today? <@${user}>*`
-                    }
-                },
-                {
-                    "type": "actions",
-                    "elements": [
+                    },
+                    "fallback": "You are unable to choose a game",
+                    "callback_id": "flow_choice",
+                    "color": "#3AA3E3",
+                    "attachment_type": "default",
+                    "actions": [
                         {
+                            "name": "flow_choice",
+                            "text": "View Ticket Status",
                             "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "emoji": true,
-                                "text": "View Ticket Status"
-                            },
-                            "action_id": "view_ticket"
+                            "value": "view"
                         },
                         {
+                            "name": "flow_choice",
+                            "text": "Create New Ticket",
                             "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "emoji": true,
-                                "text": "Create New Ticket"
-                            },
-                            "action_id": "create_ticket"
-                        }
+                            "value": "create"
+                        },
                     ]
                 }
             ]
-        };
+        }
+        // return {
+        //     "blocks": [
+        //         {
+        //             "type": "section",
+        //             "text": {
+        //                 "type": "mrkdwn",
+        //                 "text": `*Hey There What would you like me to do today? <@${user}>*`
+        //             }
+        //         },
+        //         {
+        //             "type": "actions",
+        //             "elements": [
+        //                 {
+        //                     "type": "button",
+        //                     "text": {
+        //                         "type": "plain_text",
+        //                         "emoji": true,
+        //                         "text": "View Ticket Status"
+        //                     },
+        //                     "action_id": "view_ticket"
+        //                 },
+        //                 {
+        //                     "type": "button",
+        //                     "text": {
+        //                         "type": "plain_text",
+        //                         "emoji": true,
+        //                         "text": "Create New Ticket"
+        //                     },
+        //                     "action_id": "create_ticket"
+        //                 }
+        //             ]
+        //         }
+        //     ]
+        // };
     },
     ticketFormMessage(){
        return  {
