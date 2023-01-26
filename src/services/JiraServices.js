@@ -4,6 +4,7 @@ const JIRA_URL = process.env.JIRA_URL;
 const JIRA_USERNAME = process.env.USER;
 const JIRA_TOKEN = process.env.JIRA_TOKEN;
 
+const issueType = "Hardware";
 const summary = "Summary of JIRA";
 const description = "Description of JIRA";
 const issueNo = "FI-2"
@@ -32,6 +33,7 @@ var createData = JSON.stringify({
         }
       ]
     },
+    "labels": [`${issueType}`],
     "issuetype": {
       "id": "10001"
     }
@@ -58,7 +60,7 @@ module.exports = {
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": "New Ticket",
+                        "text": `New Ticket ${response.data.key}`,
                         "emoji": true
                     }
                 },
@@ -67,7 +69,7 @@ module.exports = {
                     "fields": [
                         {
                             "type": "mrkdwn",
-                            "text": "*Type:*\nIT"
+                            "text": `*Type:*\n${issueType}`
                         },
                         {
                             "type": "mrkdwn",
@@ -105,7 +107,7 @@ module.exports = {
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": `<${response.data.self}|View ticket>`
+                        "text": `<${JIRA_URL}browse/${response.data.key}|View ticket>`
                     }
                 }
             ]
@@ -133,11 +135,11 @@ module.exports = {
             "fields": [
               {
                 "type": "mrkdwn",
-                "text": "*Type:*\nSoftware"
+                "text": `*Type:*\n${response.data.fields.labels[0]}`
               },
               {
                 "type": "mrkdwn",
-                "text": "*Created by:*\nAdmin"
+                "text": `*Assigned To:*\n${response.data.fields.assignee.displayName}`
               }
             ]
           },
@@ -146,11 +148,20 @@ module.exports = {
             "fields": [
               {
                 "type": "mrkdwn",
-                "text": "*Summary:*\nThis is summary"
+                "text": `*Summary:*\n${response.data.fields.summary}`
               },
               {
                 "type": "mrkdwn",
-                "text": "*Description:*\nThis is description"
+                "text": `*Description:*\n${response.data.fields.description?.content[0].content[0].text}`
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "fields": [
+              {
+                "type": "mrkdwn",
+                "text": `*Status:*\n${response.data.fields.status.name}`
               }
             ]
           },
@@ -158,7 +169,7 @@ module.exports = {
             "type": "section",
             "text": {
               "type": "mrkdwn",
-              "text": `<${response.data.self}|View ticket>`
+              "text": `<${JIRA_URL}browse/${response.data.key}|View ticket>`
             }
           }
         ]
