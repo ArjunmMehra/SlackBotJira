@@ -1,14 +1,15 @@
 var axios = require('axios');
 
-const JIRA_URL = 'https://arjunmehra2921.atlassian.net/';
-const JIRA_USERNAME = 'm.ahuja2611@gmail.com';
-const JIRA_API_TOKEN = 'ii88ouc9OgyNdgt8yD8l7146';
+const JIRA_URL = process.env.JIRA_URL;
+const JIRA_USERNAME = process.env.USER;
+const JIRA_TOKEN = process.env.JIRA_TOKEN;
 
 const summary = "Summary of JIRA";
 const description = "Description of JIRA";
+const issueNo = "FI-2"
 
 const createEndPoint = "rest/api/3/issue";
-const getEndPoint = "rest/api/3/issue/FI-2";
+const getTaskEndPoint = `rest/api/3/issue/${issueNo}`;
 
 var createData = JSON.stringify({
   "fields": {
@@ -41,7 +42,7 @@ var config = {
   headers: { 
     'Accept': 'application/json', 
     'Content-Type': 'application/json', 
-    'Authorization': 'Basic ' + Buffer.from(JIRA_USERNAME + ':' + JIRA_API_TOKEN).toString('base64')
+    'Authorization': 'Basic ' + Buffer.from(JIRA_USERNAME + ':' + JIRA_TOKEN).toString('base64')
   }
 };
 
@@ -112,8 +113,56 @@ module.exports = {
     },
 
     async getTaskDetails() {
-        const response = await axios.get(JIRA_URL + getEndPoint);
+      
+        const response = await axios.get(JIRA_URL + getTaskEndPoint, config);
         console.log(response);
+      
+
+      return {
+        "blocks": [
+          {
+            "type": "header",
+            "text": {
+              "type": "plain_text",
+              "text": `Details of Ticket ${response.data.key}`,
+              "emoji": true
+            }
+          },
+          {
+            "type": "section",
+            "fields": [
+              {
+                "type": "mrkdwn",
+                "text": "*Type:*\nSoftware"
+              },
+              {
+                "type": "mrkdwn",
+                "text": "*Created by:*\nAdmin"
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "fields": [
+              {
+                "type": "mrkdwn",
+                "text": "*Summary:*\nThis is summary"
+              },
+              {
+                "type": "mrkdwn",
+                "text": "*Description:*\nThis is description"
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": `<${response.data.self}|View ticket>`
+            }
+          }
+        ]
+      };
 
     }
 }
