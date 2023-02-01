@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
       const actions = botMessageBody.actions;
       switch (botMessageBody.callback_id) {
         case "flow_choice":
-          openModal(botMessageBody.trigger_id)
+          openModal(botMessageBody.trigger_id, botMessageBody.channel)
           break;
         case "create_ticket":
           res.send("view_ticket");
@@ -69,11 +69,12 @@ const modalPayload = {
 };
 
 // Open the modal using the trigger_id
-const openModal = (trigger_id) => {
+const openModal = (trigger_id, channel) => {
   client.conversations
     .open({
       trigger_id,
       view: modalPayload,
+      channel: channel.id
     })
     .then(console.log)
     .catch(console.error);
