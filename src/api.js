@@ -25,10 +25,11 @@ router.post("/", (req, res) => {
     botMessageBody = JSON.parse(botMessageBody);
     if (botMessageBody.type === "interactive_message") {
       console.log(botMessageBody.callback_id);
+      console.log('triggerid', botMessageBody.trigger_id);
       const actions = botMessageBody.actions;
       switch (botMessageBody.callback_id) {
         case "flow_choice":
-          handleFlowChoiceResponse(actions, res, botMessageBody.channel);
+          openModal(botMessageBody.trigger_id)
           break;
         case "create_ticket":
           res.send("view_ticket");
