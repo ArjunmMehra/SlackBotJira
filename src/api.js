@@ -25,17 +25,17 @@ router.post("/", (req, res) => {
     botMessageBody = JSON.parse(botMessageBody);
     if (botMessageBody.type === "interactive_message") {
       console.log(botMessageBody.callback_id);
-      console.log('triggerid', botMessageBody.trigger_id);
+      console.log("triggerid", botMessageBody.trigger_id);
       const actions = botMessageBody.actions;
       switch (botMessageBody.callback_id) {
         case "flow_choice":
-          openModal(botMessageBody.trigger_id)
+          openModal(botMessageBody.trigger_id);
           break;
         case "create_ticket":
           res.send("view_ticket");
           break;
         default:
-          openModal(botMessageBody.trigger_id)
+          openModal(botMessageBody.trigger_id);
           res.send("No callback configured");
       }
     }
@@ -45,168 +45,17 @@ router.post("/", (req, res) => {
 // Initialize the Slack API client
 const client = new WebClient(process.env.TOKEN);
 
-const blocks = [
-  {
-      type: "section",
-      text: {
-          type: "mrkdwn",
-          text: "Create a new JIRA ticket"
-      }
-  },
-  {
-      type: "divider"
-  },
-  {
-      type: "section",
-      text: {
-          type: "mrkdwn",
-          text: "*Summary:*"
-      },
-      accessory: {
-          type: "plain_text_input",
-          action_id: "summary_input"
-      }
-  },
-  {
-      type: "section",
-      text: {
-          type: "mrkdwn",
-          text: "*Description:*"
-      },
-      accessory: {
-          type: "plain_text_input",
-          action_id: "description_input",
-          multiline: true
-      }
-  },
-  {
-      type: "section",
-      text: {
-          type: "mrkdwn",
-          text: "*Issue Type:*"
-      },
-      accessory: {
-          type: "static_select",
-          action_id: "issue_type_select",
-          options: [
-              {
-                  text: {
-                      type: "plain_text",
-                      text: "Bug"
-                  },
-                  value: "bug"
-              },
-              {
-                  text: {
-                      type: "plain_text",
-                      text: "Enhancement"
-                  },
-                  value: "enhancement"
-              },
-              {
-                  text: {
-                      type: "plain_text",
-                      text: "Task"
-                  },
-                  value: "task"
-              }
-          ]
-      }
-  },
-  {
-      type: "section",
-      text: {
-          type: "mrkdwn",
-          text: "*Priority:*"
-      },
-      accessory: {
-          type: "static_select",
-          action_id: "priority_select",
-          options: [
-              {
-                  text: {
-                      type: "plain_text",
-                      text: "High"
-                  },
-                  value: "high"
-              },
-              {
-                  text: {
-                      type: "plain_text",
-                      text: "Medium"
-                  },
-                  value: "medium"
-              },
-              {
-                  text: {
-                      type: "plain_text",
-                      text: "Low"
-                  },
-                  value: "low"
-              }
-          ]
-      }
-  },
-  {
-      type: "section",
-      text: {
-          type: "mrkdwn",
-          text: "*Assignee:*"
-      },
-      accessory: {
-          type: "users_select",
-          action_id: "assignee_select"
-      }
-  }
-  ]
-
-
-// Define the modal payload
-const modalPayload = {
-  type: "modal",
-  callback_id: "modal-example",
-  title: {
-    type: "plain_text",
-    text: "Example Modal",
-  },
-  blocks: [
-    {
-      type: "section",
-      text: {
-        type: "plain_text",
-        text: "This is a section block inside the modal.",
-      },
-    },
-  ],
-  submit: {
-    type: "plain_text",
-    text: "Submit",
-  },
-};
-
 // Open the modal using the trigger_id
 const openModal = async (trigger_id) => {
   try {
     // Call the views.open method using the WebClient passed to listeners
     const result = await client.views.open({
       trigger_id: trigger_id,
-      view: {
-        "type": "modal",
-        "title": {
-          "type": "plain_text",
-          "text": "My App"
-        },
-        "close": {
-          "type": "plain_text",
-          "text": "Close"
-        },
-        "blocks": blocks
-      }
+      view: slackMessageBuilders.getCreateTicketModal()
     });
 
     console.log(result);
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error);
   }
 };
