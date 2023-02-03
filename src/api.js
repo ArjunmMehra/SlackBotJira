@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
       const actions = botMessageBody.actions;
       switch (botMessageBody.callback_id) {
         case "flow_choice":
-          openModal(botMessageBody.trigger_id, botMessageBody.channel)
+          openModal(botMessageBody.trigger_id)
           break;
         case "create_ticket":
           res.send("view_ticket");
@@ -69,15 +69,47 @@ const modalPayload = {
 };
 
 // Open the modal using the trigger_id
-const openModal = (trigger_id, channel) => {
-  client.conversations
-    .open({
-      trigger_id,
-      view: modalPayload,
-      channel: channel.id
-    })
-    .then(console.log)
-    .catch(console.error);
+const openModal = (trigger_id) => {
+  try {
+    // Call the views.open method using the WebClient passed to listeners
+    const result = await client.views.open({
+      trigger_id: trigger_id,
+      view: {
+        "type": "modal",
+        "title": {
+          "type": "plain_text",
+          "text": "My App"
+        },
+        "close": {
+          "type": "plain_text",
+          "text": "Close"
+        },
+        "blocks": [
+          {
+            "type": "section",
+            "text": {
+              "type": "mrkdwn",
+              "text": "About the simplest modal you could conceive of :smile:\n\nMaybe <https://api.slack.com/reference/block-kit/interactive-components|*make the modal interactive*> or <https://api.slack.com/surfaces/modals/using#modifying|*learn more advanced modal use cases*>."
+            }
+          },
+          {
+            "type": "context",
+            "elements": [
+              {
+                "type": "mrkdwn",
+                "text": "Psssst this modal was designed using <https://api.slack.com/tools/block-kit-builder|*Block Kit Builder*>"
+              }
+            ]
+          }
+        ]
+      }
+    });
+
+    console.log(result);
+  }
+  catch (error) {
+    console.error(error);
+  }
 };
 
 const handleFlowChoiceResponse = (actions, res, channel) => {
