@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
       const actions = botMessageBody.actions;
       switch (botMessageBody.callback_id) {
         case "flow_choice":
-          await openModal(botMessageBody.trigger_id)
+          openModal(botMessageBody.trigger_id)
           break;
         case "create_ticket":
           res.send("view_ticket");
