@@ -27,27 +27,27 @@ module.exports = {
   },
   listBotMessage(user) {
     return {
-      text: "Please choose froom below options",
+      text: `*Hey There What would you like me to do today? <@${user}>*`,
       attachments: [
         {
           text: {
             type: "mrkdwn",
             text: `*Hey There What would you like me to do today? <@${user}>*`,
           },
-          fallback: "You are unable to choose a game",
-          callback_id: "flow_choice",
+          fallback: "You are unable to choose an option",
+          callback_id: "user_choice",
           color: "#3AA3E3",
           attachment_type: "default",
           actions: [
             {
-              name: "flow_choice",
-              text: "View Ticket Status",
+              name: "user_choice",
+              text: "View Ticket status",
               type: "button",
               value: "view",
             },
             {
-              name: "flow_choice",
-              text: "Create New Ticket",
+              name: "user_choice",
+              text: "Create new Ticket",
               type: "button",
               value: "create",
             },
@@ -154,7 +154,7 @@ module.exports = {
       },
       "title": {
         "type": "plain_text",
-        "text": "Workplace check-in",
+        "text": "Create Ticket",
         "emoji": true
       },
       "blocks": [
@@ -162,7 +162,7 @@ module.exports = {
           "type": "section",
           "text": {
             "type": "plain_text",
-            "text": ":wave: Hey David!\n\nWe'd love to hear from you how we can make this place the best place you’ve ever worked.",
+            "text": ":pencil2: Please provide the details for ticket creation",
             "emoji": true
           }
         },
@@ -173,74 +173,38 @@ module.exports = {
           "type": "input",
           "label": {
             "type": "plain_text",
-            "text": "You enjoy working here at Pistachio & Co",
+            "text": "Enter the summary of the issue",
             "emoji": true
           },
           "element": {
-            "type": "radio_buttons",
-            "options": [
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Strongly agree",
-                  "emoji": true
-                },
-                "value": "1"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Agree",
-                  "emoji": true
-                },
-                "value": "2"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Neither agree nor disagree",
-                  "emoji": true
-                },
-                "value": "3"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Disagree",
-                  "emoji": true
-                },
-                "value": "4"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": "Strongly disagree",
-                  "emoji": true
-                },
-                "value": "5"
-              }
-            ]
+            "type": "plain_text_input"
           }
         },
         {
           "type": "input",
           "label": {
             "type": "plain_text",
-            "text": "What do you want for our team weekly lunch?",
+            "text": "Enter a detailed description of the issue",
             "emoji": true
           },
           "element": {
-            "type": "multi_static_select",
-            "placeholder": {
-              "type": "plain_text",
-              "text": "Select your favorites",
-              "emoji": true
-            },
+            "type": "plain_text_input",
+            "multiline": true
+          }
+        },
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "*Select the issue type*"
+          },
+          "accessory": {
+            "type": "radio_buttons",
             "options": [
               {
                 "text": {
                   "type": "plain_text",
-                  "text": ":pizza: Pizza",
+                  "text": ":bug:Bug",
                   "emoji": true
                 },
                 "value": "value-0"
@@ -248,7 +212,7 @@ module.exports = {
               {
                 "text": {
                   "type": "plain_text",
-                  "text": ":fried_shrimp: Thai food",
+                  "text": ":pencil:Task",
                   "emoji": true
                 },
                 "value": "value-1"
@@ -256,78 +220,47 @@ module.exports = {
               {
                 "text": {
                   "type": "plain_text",
-                  "text": ":desert_island: Hawaiian",
+                  "text": ":scroll:Story",
                   "emoji": true
                 },
                 "value": "value-2"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": ":meat_on_bone: Texas BBQ",
-                  "emoji": true
-                },
-                "value": "value-3"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": ":hamburger: Burger",
-                  "emoji": true
-                },
-                "value": "value-4"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": ":taco: Tacos",
-                  "emoji": true
-                },
-                "value": "value-5"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": ":green_salad: Salad",
-                  "emoji": true
-                },
-                "value": "value-6"
-              },
-              {
-                "text": {
-                  "type": "plain_text",
-                  "text": ":stew: Indian",
-                  "emoji": true
-                },
-                "value": "value-7"
               }
-            ]
+            ],
+            "action_id": "radio_buttons-action"
           }
-        },
+        }
+      ]
+    }
+  },
+  getViewTicketModal() {
+    return {
+      "type": "modal",
+      "submit": {
+        "type": "plain_text",
+        "text": "Submit",
+        "emoji": true
+      },
+      "close": {
+        "type": "plain_text",
+        "text": "Cancel",
+        "emoji": true
+      },
+      "title": {
+        "type": "plain_text",
+        "text": "View Ticket Status",
+        "emoji": true
+      },
+      "blocks": [
         {
           "type": "input",
           "label": {
             "type": "plain_text",
-            "text": "What can we do to improve your experience working here?",
+            "text": ":wave: What is the ticket id?",
             "emoji": true
           },
           "element": {
-            "type": "plain_text_input",
-            "multiline": true
+            "type": "plain_text_input"
           }
-        },
-        {
-          "type": "input",
-          "label": {
-            "type": "plain_text",
-            "text": "Anything else you want to tell us?",
-            "emoji": true
-          },
-          "element": {
-            "type": "plain_text_input",
-            "multiline": true
-          },
-          "optional": true
         }
       ]
     }

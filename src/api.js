@@ -10,6 +10,7 @@ const bot = setupSlackBot(config);
 require("dotenv").config();
 
 const { WebClient } = require("@slack/web-api");
+const { channel } = require("slack-block-builder");
 
 const app = express();
 const router = express.Router();
@@ -25,18 +26,11 @@ router.post("/", (req, res) => {
     botMessageBody = JSON.parse(botMessageBody);
     if (botMessageBody.type === "interactive_message") {
       console.log(botMessageBody.callback_id);
-      console.log("triggerid", botMessageBody.trigger_id);
       const actions = botMessageBody.actions;
-      switch (botMessageBody.callback_id) {
-        case "flow_choice":
-          openModal(botMessageBody.trigger_id);
-          break;
-        case "create_ticket":
-          res.send("view_ticket");
-          break;
-        default:
-          openModal(botMessageBody.trigger_id);
-          res.send("No callback configured");
+      if (botMessageBody.callback_id === "user_choice") {
+        handleFlowChoiceResponse(actions, res, trigger_id, channel);
+      } else {
+        res.send("No choice selected");
       }
     }
   }
@@ -46,12 +40,11 @@ router.post("/", (req, res) => {
 const client = new WebClient(process.env.TOKEN);
 
 // Open the modal using the trigger_id
-const openModal = async (trigger_id) => {
+const openCreateTicketModal = async (trigger_id) => {
   try {
-    // Call the views.open method using the WebClient passed to listeners
     const result = await client.views.open({
       trigger_id: trigger_id,
-      view: slackMessageBuilders.getCreateTicketModal()
+      view: slackMessageBuilders.getCreateTicketModal(),
     });
 
     console.log(result);
@@ -60,14 +53,27 @@ const openModal = async (trigger_id) => {
   }
 };
 
-const handleFlowChoiceResponse = (actions, res, channel) => {
+const openViewTicketModal = async (trigger_id) => {
+  try {
+    const result = await client.views.open({
+      trigger_id: trigger_id,
+      view: slackMessageBuilders.getViewTicketModal(),
+    });
+
+    console.log(result);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const handleUserChoiceResponse = (actions, res, trigger_id) => {
   const value = actions[0].value;
-  if (value == "view") {
-    bot.postMessage(channel.id, "view_ticket_selected from API");
+  if (value === "view") {
+    openViewTicketModal(trigger_id);
     res.send("view_ticket_selected");
-  } else if (value == "create") {
-    bot.postMessage(channel.id, "view_ticket_selected");
-    res.send("view_ticket_selected");
+  } else if (value === "create") {
+    openCreateTicketModal(trigger_id);
+    res.send("create_ticket_selected");
   } else {
     bot.postMessage(channel.id, "not_a_valid_choice");
     res.send("not_a_valid_choice");
