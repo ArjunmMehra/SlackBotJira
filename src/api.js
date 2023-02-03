@@ -45,6 +45,122 @@ router.post("/", (req, res) => {
 // Initialize the Slack API client
 const client = new WebClient(process.env.TOKEN);
 
+const blocks = [
+  {
+      type: "section",
+      text: {
+          type: "mrkdwn",
+          text: "Create a new JIRA ticket"
+      }
+  },
+  {
+      type: "divider"
+  },
+  {
+      type: "section",
+      text: {
+          type: "mrkdwn",
+          text: "*Summary:*"
+      },
+      accessory: {
+          type: "plain_text_input",
+          action_id: "summary_input"
+      }
+  },
+  {
+      type: "section",
+      text: {
+          type: "mrkdwn",
+          text: "*Description:*"
+      },
+      accessory: {
+          type: "plain_text_input",
+          action_id: "description_input",
+          multiline: true
+      }
+  },
+  {
+      type: "section",
+      text: {
+          type: "mrkdwn",
+          text: "*Issue Type:*"
+      },
+      accessory: {
+          type: "static_select",
+          action_id: "issue_type_select",
+          options: [
+              {
+                  text: {
+                      type: "plain_text",
+                      text: "Bug"
+                  },
+                  value: "bug"
+              },
+              {
+                  text: {
+                      type: "plain_text",
+                      text: "Enhancement"
+                  },
+                  value: "enhancement"
+              },
+              {
+                  text: {
+                      type: "plain_text",
+                      text: "Task"
+                  },
+                  value: "task"
+              }
+          ]
+      }
+  },
+  {
+      type: "section",
+      text: {
+          type: "mrkdwn",
+          text: "*Priority:*"
+      },
+      accessory: {
+          type: "static_select",
+          action_id: "priority_select",
+          options: [
+              {
+                  text: {
+                      type: "plain_text",
+                      text: "High"
+                  },
+                  value: "high"
+              },
+              {
+                  text: {
+                      type: "plain_text",
+                      text: "Medium"
+                  },
+                  value: "medium"
+              },
+              {
+                  text: {
+                      type: "plain_text",
+                      text: "Low"
+                  },
+                  value: "low"
+              }
+          ]
+      }
+  },
+  {
+      type: "section",
+      text: {
+          type: "mrkdwn",
+          text: "*Assignee:*"
+      },
+      accessory: {
+          type: "users_select",
+          action_id: "assignee_select"
+      }
+  }
+  ]
+
+
 // Define the modal payload
 const modalPayload = {
   type: "modal",
@@ -84,24 +200,7 @@ const openModal = async (trigger_id) => {
           "type": "plain_text",
           "text": "Close"
         },
-        "blocks": [
-          {
-            "type": "section",
-            "text": {
-              "type": "mrkdwn",
-              "text": "About the simplest modal you could conceive of :smile:\n\nMaybe <https://api.slack.com/reference/block-kit/interactive-components|*make the modal interactive*> or <https://api.slack.com/surfaces/modals/using#modifying|*learn more advanced modal use cases*>."
-            }
-          },
-          {
-            "type": "context",
-            "elements": [
-              {
-                "type": "mrkdwn",
-                "text": "Psssst this modal was designed using <https://api.slack.com/tools/block-kit-builder|*Block Kit Builder*>"
-              }
-            ]
-          }
-        ]
+        "blocks": blocks
       }
     });
 
