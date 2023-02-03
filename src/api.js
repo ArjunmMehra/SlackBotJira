@@ -66,13 +66,13 @@ const openViewTicketModal = async (trigger_id) => {
   }
 };
 
-const handleUserChoiceResponse = (actions, res, trigger_id) => {
+const handleUserChoiceResponse = async (actions, res, trigger_id) => {
   const value = actions[0].value;
   if (value === "view") {
-    openViewTicketModal(trigger_id);
+    await openViewTicketModal(trigger_id);
     res.send("view_ticket_selected");
   } else if (value === "create") {
-    openCreateTicketModal(trigger_id);
+    await openCreateTicketModal(trigger_id);
     res.send("create_ticket_selected");
   } else {
     bot.postMessage(channel.id, "not_a_valid_choice");
