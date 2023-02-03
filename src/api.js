@@ -28,7 +28,7 @@ router.post("/", (req, res) => {
       console.log(botMessageBody.callback_id);
       const actions = botMessageBody.actions;
       if (botMessageBody.callback_id === "user_choice") {
-        handleFlowChoiceResponse(actions, res, trigger_id, channel);
+        handleUserChoiceResponse(actions, res, trigger_id, channel);
       } else {
         res.send("No choice selected");
       }
