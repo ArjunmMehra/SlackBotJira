@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
       const actions = botMessageBody.actions;
       switch (botMessageBody.callback_id) {
         case "flow_choice":
-          openModal(botMessageBody.trigger_id)
+          await openModal(botMessageBody.trigger_id)
           break;
         case "create_ticket":
           res.send("view_ticket");
@@ -69,7 +69,7 @@ const modalPayload = {
 };
 
 // Open the modal using the trigger_id
-const openModal = (trigger_id) => {
+const openModal = async (trigger_id) => {
   try {
     // Call the views.open method using the WebClient passed to listeners
     const result = await client.views.open({
