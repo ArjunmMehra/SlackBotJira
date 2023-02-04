@@ -160,9 +160,9 @@ module.exports = {
       "blocks": [
         {
           "type": "section",
+          "block_id": "form",
           "text": {
             "type": "plain_text",
-            "block_id": "form",
             "text": ":pencil2: Please provide the details for ticket creation",
             "emoji": true
           }
@@ -172,37 +172,36 @@ module.exports = {
         },
         {
           "type": "input",
+          "block_id": "summary",
           "label": {
             "type": "plain_text",
-            "block_id": "summary",
-            "action_id": "sum_input",
             "text": "Enter the summary of the issue",
             "emoji": true
           },
           "element": {
-            "type": "plain_text_input"
+            "type": "plain_text_input",
+            "action_id": "sum_input"
           }
         },
         {
           "type": "input",
+          "block_id": "desc",
           "label": {
             "type": "plain_text",
-            "block_id": "desc",
-            "action_id": "desc_input",
             "text": "Enter a detailed description of the issue",
             "emoji": true
           },
           "element": {
             "type": "plain_text_input",
-            "multiline": true
+            "multiline": true,
+            "action_id": "desc_input"
           }
         },
         {
           "type": "section",
+          "block_id": "issue_type",
           "text": {
             "type": "mrkdwn",
-            "block_id": "issue_type",
-            "action_id": "issue_radio",
             "text": "*Select the issue type*"
           },
           "accessory": {
