@@ -35,19 +35,23 @@ router.post("/", (req, res) => {
 
       const summary = values.summary.sum_input.value;
       const description = values.desc.desc_input.value;
-      const issueType =  values.issue_type.issue_type_action.selected_option.value;
+      const issueType =
+        values.issue_type.issue_type_action.selected_option.value;
 
       const payload = {
         summary,
         description,
-        issueType
-      }
-      
+        issueType,
+      };
+
       console.log("payload", payload);
-      jiraService.createTicket(payload)
+      jiraService.createTicket(payload);
 
       // Acknowledge the modal submission
-      res.status(200).end();
+      res.send({
+        status: 200,
+        response_action: "clear",
+      });
     }
   }
 });
