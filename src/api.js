@@ -44,7 +44,7 @@ router.post("/", (req, res) => {
       };
 
       console.log("payload", payload);
-      jiraService.createTicket(payload);
+      // jiraService.createTicket(payload);
 
       // Acknowledge the modal submission
       res.send({
