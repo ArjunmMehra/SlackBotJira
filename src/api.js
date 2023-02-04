@@ -32,6 +32,9 @@ router.post("/", (req, res) => {
       } else {
         res.send("No choice selected");
       }
+    } else if(botMessageBody.type === "view_submission"){
+      const values = botMessageBody.view.state.values;
+      console.log('state values', values)
     }
   }
 });
@@ -70,10 +73,8 @@ const handleUserChoiceResponse = async (actions, res, trigger_id) => {
   const value = actions[0].value;
   if (value === "view") {
     await openViewTicketModal(trigger_id);
-    res.send("view_ticket_selected");
   } else if (value === "create") {
     await openCreateTicketModal(trigger_id);
-    res.send("create_ticket_selected");
   } else {
     bot.postMessage(channel.id, "not_a_valid_choice");
     res.send("not_a_valid_choice");

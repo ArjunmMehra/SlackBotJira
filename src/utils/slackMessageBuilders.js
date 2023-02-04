@@ -162,6 +162,7 @@ module.exports = {
           "type": "section",
           "text": {
             "type": "plain_text",
+            "block_id": "form",
             "text": ":pencil2: Please provide the details for ticket creation",
             "emoji": true
           }
@@ -173,6 +174,8 @@ module.exports = {
           "type": "input",
           "label": {
             "type": "plain_text",
+            "block_id": "summary",
+            "action_id": "sum_input",
             "text": "Enter the summary of the issue",
             "emoji": true
           },
@@ -184,6 +187,8 @@ module.exports = {
           "type": "input",
           "label": {
             "type": "plain_text",
+            "block_id": "desc",
+            "action_id": "desc_input",
             "text": "Enter a detailed description of the issue",
             "emoji": true
           },
@@ -196,6 +201,8 @@ module.exports = {
           "type": "section",
           "text": {
             "type": "mrkdwn",
+            "block_id": "issue_type",
+            "action_id": "issue_radio",
             "text": "*Select the issue type*"
           },
           "accessory": {
@@ -207,7 +214,7 @@ module.exports = {
                   "text": ":bug:Bug",
                   "emoji": true
                 },
-                "value": "value-0"
+                "value": "bug"
               },
               {
                 "text": {
@@ -215,7 +222,7 @@ module.exports = {
                   "text": ":pencil:Task",
                   "emoji": true
                 },
-                "value": "value-1"
+                "value": "task"
               },
               {
                 "text": {
@@ -223,7 +230,7 @@ module.exports = {
                   "text": ":scroll:Story",
                   "emoji": true
                 },
-                "value": "value-2"
+                "value": "story"
               }
             ],
             "action_id": "radio_buttons-action"
