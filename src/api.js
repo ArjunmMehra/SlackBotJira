@@ -35,8 +35,7 @@ router.post("/", (req, res) => {
 
       const summary = values.summary.sum_input.value;
       const description = values.desc.desc_input.value;
-      const issueType =
-        values.issue_type.issue_type_action.selected_option.value;
+      const issueType =  values.issue_type.issue_type_action.selected_option.value;
 
       const payload = {
         summary,

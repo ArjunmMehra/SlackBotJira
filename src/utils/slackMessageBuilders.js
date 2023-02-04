@@ -232,7 +232,7 @@ module.exports = {
                 "value": "story"
               }
             ],
-            "action_id": "radio_buttons-action"
+            "action_id": "issue_type_action"
           }
         }
       ]
