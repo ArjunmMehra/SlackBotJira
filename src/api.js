@@ -32,29 +32,24 @@ router.post("/", (req, res) => {
       } else {
         res.send("No choice selected");
       }
-    // } else if(botMessageBody.type === "view_submission"){
-    //   const values = botMessageBody.view.state.values;
-
-    //   const summary = values.summary.sum_input.value;
-    //   const desc = values.desc.desc_input.value;
-    //   const issueType = values.issue_type.radio_buttons-action.selected_option.value;
-      
-    //   console.log('state values', values)
-    // }
+    }
   }
 });
 
-router.post('/modal-submission', async (req, res) => {
+router.post("/modal-submission", async (req, res) => {
   // Parse the payload of the modal submission
   const payload = JSON.parse(req.body.payload);
 
-// Get the values submitted in the modal
+  // Get the values submitted in the modal
   const values = payload.view.state.values;
 
   const summary = values.summary.sum_input.value;
   const desc = values.desc.desc_input.value;
   const issueType = values.issue_type.radio_buttons-action.selected_option.value;
-  console.log('state values', values)
+  console.log("state values", values);
+  console.log("summary", summary);
+  console.log("desc", desc);
+  console.log("issueType", issueType);
 
   // Do something with the values (e.g. store them in a database, send them to an API, etc.)
 
