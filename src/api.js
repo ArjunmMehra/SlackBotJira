@@ -47,10 +47,11 @@ router.post("/", (req, res) => {
       // jiraService.createTicket(payload);
 
       // Acknowledge the modal submission
-      res.send({
-        status: 200,
-        response_action: "clear",
-      });
+      // res.send({
+      //   status: 200,
+      //   response_action: "clear",
+      // });
+      res.sendStatus(200).end();
     }
   }
 });
