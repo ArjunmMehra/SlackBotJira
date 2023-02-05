@@ -63,7 +63,8 @@ router.post("/", (req, res) => {
       //   status: 200,
       //   response_action: "clear",
       // });
-      res.status(200).send("view submission");
+      res.status(200).end();
+      console.log("after end");
       // res.sendStatus(200).end();
     }
   }
