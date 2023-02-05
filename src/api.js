@@ -42,8 +42,20 @@ router.post("/", (req, res) => {
         description,
         issueType,
       };
-
       console.log("payload", payload);
+     client.view(botMessageBody.view.id).ack({
+      response_action: 'update',
+      blocks: [
+        {
+          type: 'section',
+          text: {
+            type: 'plain_text',
+            text: 'View submission acknowledged!'
+          }
+        }
+      ]
+    });
+
       // jiraService.createTicket(payload);
 
       // Acknowledge the modal submission
@@ -51,7 +63,8 @@ router.post("/", (req, res) => {
       //   status: 200,
       //   response_action: "clear",
       // });
-      res.sendStatus(200).end();
+      res.send("view submission");
+      // res.sendStatus(200).end();
     }
   }
 });
@@ -91,6 +104,7 @@ const handleUserChoiceResponse = async (actions, res, trigger_id) => {
   if (value === "view") {
     await openViewTicketModal(trigger_id);
   } else if (value === "create") {
+    res.send("Creating Ticket");
     await openCreateTicketModal(trigger_id);
   } else {
     bot.postMessage(channel.id, "not_a_valid_choice");
