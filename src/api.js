@@ -15,7 +15,7 @@ const { channel } = require("slack-block-builder");
 const app = express();
 const router = express.Router();
 // hosted URL  : http://localhost:9000/.netlify/functions/api
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   if (req.apiGateway.event.body) {
     let botMessageBody = decodeURIComponent(
       req.apiGateway.event.body.replace("payload=", "")
@@ -26,7 +26,7 @@ router.post("/", (req, res) => {
       console.log(botMessageBody.callback_id);
       const actions = botMessageBody.actions;
       if (botMessageBody.callback_id === "user_choice") {
-        handleUserChoiceResponse(actions, res, botMessageBody.trigger_id);
+         handleUserChoiceResponse(actions, res, botMessageBody.trigger_id);
       } else {
         res.send("No choice selected");
       }
@@ -93,8 +93,8 @@ const openViewTicketModal = async (trigger_id) => {
       trigger_id: trigger_id,
       view: slackMessageBuilders.getViewTicketModal(),
     });
-
-    console.log(result);
+    console.log('result',result);
+    return result;
   } catch (error) {
     console.error(error);
   }
@@ -105,7 +105,9 @@ const handleUserChoiceResponse = async (actions, res, trigger_id) => {
   if (value === "view") {
     await openViewTicketModal(trigger_id);
   } else if (value === "create") {
-    await openCreateTicketModal(trigger_id);
+    const result = await openCreateTicketModal(trigger_id);
+    console.log('result of create model', result)
+    res.send('ticket created')
   } else {
     bot.postMessage(channel.id, "not_a_valid_choice");
     res.send("not_a_valid_choice");
