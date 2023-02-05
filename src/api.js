@@ -43,18 +43,18 @@ router.post("/", (req, res) => {
         issueType,
       };
       console.log("payload", payload);
-     client.view(botMessageBody.view.id).ack({
-      response_action: 'update',
-      blocks: [
-        {
-          type: 'section',
-          text: {
-            type: 'plain_text',
-            text: 'View submission acknowledged!'
-          }
-        }
-      ]
-    });
+    //  client.view(botMessageBody.view.id).ack({
+    //   response_action: 'update',
+    //   blocks: [
+    //     {
+    //       type: 'section',
+    //       text: {
+    //         type: 'plain_text',
+    //         text: 'View submission acknowledged!'
+    //       }
+    //     }
+    //   ]
+    // });
 
       // jiraService.createTicket(payload);
 
@@ -63,7 +63,7 @@ router.post("/", (req, res) => {
       //   status: 200,
       //   response_action: "clear",
       // });
-      res.send("view submission");
+      res.status(200).send("view submission");
       // res.sendStatus(200).end();
     }
   }
