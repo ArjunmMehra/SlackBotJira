@@ -43,29 +43,10 @@ router.post("/", async (req, res) => {
         issueType,
       };
       console.log("payload", payload);
-    //  client.view(botMessageBody.view.id).ack({
-    //   response_action: 'update',
-    //   blocks: [
-    //     {
-    //       type: 'section',
-    //       text: {
-    //         type: 'plain_text',
-    //         text: 'View submission acknowledged!'
-    //       }
-    //     }
-    //   ]
-    // });
-
-      // jiraService.createTicket(payload);
-
-      // Acknowledge the modal submission
-      // res.send({
-      //   status: 200,
-      //   response_action: "clear",
-      // });
+      const result = await jiraService.createTicket(payload);
+      bot.postMessage(channel, slackMessageBuilders.createdMessage(), result);
       res.status(200).end();
       console.log("after end");
-      // res.sendStatus(200).end();
     }
   }
 });
@@ -107,7 +88,7 @@ const handleUserChoiceResponse = async (actions, res, trigger_id) => {
   } else if (value === "create") {
     const result = await openCreateTicketModal(trigger_id);
     console.log('result of create model', result)
-    res.send('ticket created')
+    res.send('creating ticket')
   } else {
     bot.postMessage(channel.id, "not_a_valid_choice");
     res.send("not_a_valid_choice");

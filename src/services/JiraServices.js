@@ -51,6 +51,7 @@ var config = {
 
 module.exports = {
   async createTicket(payload) {
+    const { summary, description, issueType } = payload;
     const response = await axios.post(
       JIRA_URL + createEndPoint,
       createData(payload),

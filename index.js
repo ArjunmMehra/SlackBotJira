@@ -34,14 +34,14 @@ bot.on("message", (data) => {
       console.log(data);
       switch (args[1].toLowerCase()) {
         case constants.WELCOME_COMMAND:
-          welcomeMessage(data.channel);
+          listBotOptions(data.channel, data.user);
           break;
         case constants.CREATE_TICKET:
           createTicket(data.channel);
           break;
         case constants.GET_TICKET:
           listBotOptions(data.channel, data.user);
-          // getTaskDetails(data.channel);
+         // getTaskDetails(data.channel);
           break;
         case constants.DESCRIPTION:
           description(data.channel);
@@ -72,7 +72,12 @@ function defaultMessage(channel) {
   );
 }
 async function createTicket(channel) {
-  const result = await jiraService.createTicket();
+  const payload = {
+    summary : 'test summary',
+    description: 'test des',
+    issueType: 'Bug'
+  }
+  const result = await jiraService.createTicket(payload);
   bot.postMessage(channel, slackMessageBuilders.createdMessage(), result);
 }
 async function getTaskDetails(channel) {
