@@ -104,7 +104,6 @@ const handleUserChoiceResponse = async (actions, res, trigger_id) => {
   if (value === "view") {
     await openViewTicketModal(trigger_id);
   } else if (value === "create") {
-    res.send("Creating Ticket");
     await openCreateTicketModal(trigger_id);
   } else {
     bot.postMessage(channel.id, "not_a_valid_choice");
