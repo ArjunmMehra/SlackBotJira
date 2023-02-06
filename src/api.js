@@ -92,11 +92,23 @@ router.post("/", async (req, res) => {
       };
       console.log("payload", payload);
       //const result = await jiraService.createTicket(payload);
-      const response = await axios.post(
-        JIRA_URL + createEndPoint,
-        createData(payload),
-        axiosConfig
-      );
+      // const response = await axios.post(
+      //   JIRA_URL + createEndPoint,
+      //   createData(payload),
+      //   axiosConfig
+      // );
+      const response = await axios({
+        method: 'post',
+        url: JIRA_URL + createEndPoint,
+        data: createData(payload),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization:
+            "Basic " +
+            Buffer.from(JIRA_USERNAME + ":" + JIRA_TOKEN).toString("base64"),
+        }
+      });
       console.log(response);
       bot.postMessage(channel, slackMessageBuilders.createdMessage(), response);
       res.status(200).end();
