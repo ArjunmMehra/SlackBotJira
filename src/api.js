@@ -8,7 +8,8 @@ const jiraService = require("/services/JiraServices");
 const config = setupConfig();
 const bot = setupSlackBot(config);
 require("dotenv").config();
-import axios from "axios";
+// const axios = require("axios");
+const request = require('request');
 
 const { WebClient } = require("@slack/web-api");
 const { channel } = require("slack-block-builder");
@@ -92,38 +93,44 @@ router.post("/", async (req, res) => {
       };
       console.log("payload", payload);
       // const result = await jiraService.createTicket(payload);
-      const response = await axios.post(
-        JIRA_URL + createEndPoint,
-        createData(payload),
-        axiosConfig
-      );
+      // const response = await axios.post(
+      //   JIRA_URL + createEndPoint,
+      //   createData(payload),
+      //   axiosConfig
+      // );
 
-      axios.post(JIRA_URL + createEndPoint, createData(payload),axiosConfig)
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log('error in axios',error);
-      });
-      // const response = await axios({
-      //   method: 'post',
-      //   url: JIRA_URL + createEndPoint,
-      //   data: createData(payload),
-      //   headers: {
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json",
-      //     Authorization:
-      //       "Basic " +
-      //       Buffer.from(JIRA_USERNAME + ":" + JIRA_TOKEN).toString("base64"),
-      //   }
-      // });
-      // console.log(response);
+      await createJIRA(payload);
+     
       bot.postMessage(channel, slackMessageBuilders.createdMessage(), response);
       res.status(200).end();
       console.log("after end");
     }
   }
 });
+
+const createJIRA = async (payload) => {
+  const request = require('request');
+
+const options = {
+  method: 'POST',
+  url: JIRA_URL + createEndPoint,
+  auth: {
+    username: JIRA_USERNAME,
+    password: JIRA_TOKEN
+  },
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: createData(payload)
+};
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+  console.log('res', response)
+  console.log('body',body);
+});
+
+}
 
 // Initialize the Slack API client
 const client = new WebClient(process.env.TOKEN);
