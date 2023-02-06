@@ -103,7 +103,7 @@ router.post("/", async (req, res) => {
         console.log(response);
       })
       .catch(function (error) {
-        console.log('error in axios'error);
+        console.log('error in axios',error);
       });
       // const response = await axios({
       //   method: 'post',
