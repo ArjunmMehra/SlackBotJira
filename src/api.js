@@ -101,7 +101,6 @@ router.post("/", async (req, res) => {
 
       await createJIRA(payload);
      
-      bot.postMessage(channel, slackMessageBuilders.createdMessage(), response);
       res.status(200).end();
       console.log("after end");
     }
@@ -125,6 +124,7 @@ const options = {
 
 request(options, function (error, response, body) {
   if (error) throw new Error(error);
+  bot.postMessage(channel, slackMessageBuilders.createdMessage(), body);
   console.log('body',body);
 });
 
