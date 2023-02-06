@@ -8,7 +8,7 @@ const jiraService = require("/services/JiraServices");
 const config = setupConfig();
 const bot = setupSlackBot(config);
 require("dotenv").config();
-const axios = require("axios");
+import axios from "axios";
 
 const { WebClient } = require("@slack/web-api");
 const { channel } = require("slack-block-builder");
@@ -103,7 +103,7 @@ router.post("/", async (req, res) => {
         console.log(response);
       })
       .catch(function (error) {
-        console.log(error);
+        console.log('error in axios'error);
       });
       // const response = await axios({
       //   method: 'post',
