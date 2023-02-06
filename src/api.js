@@ -99,7 +99,24 @@ router.post("/", async (req, res) => {
       //   axiosConfig
       // );
 
-      await createJIRA(payload);
+      const options = {
+        method: 'POST',
+        url: `${JIRA_URL}${createEndPoint}`,
+        auth: {
+          username: JIRA_USERNAME,
+          password: JIRA_TOKEN
+        },
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: createData(payload)
+      };
+      
+      request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+        bot.postMessage(channel, slackMessageBuilders.createdMessage(), body);
+        console.log('body',body);
+      });
      
       res.status(200).end();
       console.log("after end");
