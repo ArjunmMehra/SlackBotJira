@@ -109,11 +109,10 @@ router.post("/", async (req, res) => {
 });
 
 const createJIRA = async (payload) => {
-  const request = require('request');
 
 const options = {
   method: 'POST',
-  url: JIRA_URL + createEndPoint,
+  url: `${JIRA_URL}${createEndPoint}`,
   auth: {
     username: JIRA_USERNAME,
     password: JIRA_TOKEN
