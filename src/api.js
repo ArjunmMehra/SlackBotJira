@@ -9,7 +9,7 @@ const config = setupConfig();
 const bot = setupSlackBot(config);
 require("dotenv").config();
 // const axios = require("axios");
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
 
 const { WebClient } = require("@slack/web-api");
 const { channel } = require("slack-block-builder");
