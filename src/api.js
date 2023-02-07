@@ -9,11 +9,10 @@ const config = setupConfig();
 const bot = setupSlackBot(config);
 require("dotenv").config();
 // const axios = require("axios");
-const request = require('request');
+import fetch from "node-fetch";
 
 const { WebClient } = require("@slack/web-api");
 const { channel } = require("slack-block-builder");
-
 
 const JIRA_URL = process.env.JIRA_URL;
 const JIRA_USERNAME = process.env.USER;
@@ -75,7 +74,7 @@ router.post("/", async (req, res) => {
       console.log(botMessageBody.callback_id);
       const actions = botMessageBody.actions;
       if (botMessageBody.callback_id === "user_choice") {
-         handleUserChoiceResponse(actions, res, botMessageBody.trigger_id);
+        handleUserChoiceResponse(actions, res, botMessageBody.trigger_id);
       } else {
         res.send("No choice selected");
       }
@@ -84,7 +83,8 @@ router.post("/", async (req, res) => {
 
       const summary = values.summary.sum_input.value;
       const description = values.desc.desc_input.value;
-      const issueType =  values.issue_type.issue_type_action.selected_option.value;
+      const issueType =
+        values.issue_type.issue_type_action.selected_option.value;
 
       const payload = {
         summary,
@@ -99,53 +99,26 @@ router.post("/", async (req, res) => {
       //   axiosConfig
       // );
 
-      const options = {
-        method: 'POST',
-        url: `${JIRA_URL}${createEndPoint}`,
-        auth: {
-          username: JIRA_USERNAME,
-          password: JIRA_TOKEN
-        },
+      const response = await fetch(JIRA_URL + createEndPoint, {
+        method: "post",
+        body: createData(payload),
         headers: {
-          'Content-Type': 'application/json'
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization:
+            "Basic " +
+            Buffer.from(JIRA_USERNAME + ":" + JIRA_TOKEN).toString("base64"),
         },
-        body: createData(payload)
-      };
-      
-      request(options, function (error, response, body) {
-        if (error) throw new Error(error);
-        bot.postMessage(channel, slackMessageBuilders.createdMessage(), body);
-        console.log('body',body);
       });
-     
+      const data = await response.json();
+
+      console.log(data);
+
       res.status(200).end();
       console.log("after end");
     }
   }
 });
-
-const createJIRA = async (payload) => {
-
-const options = {
-  method: 'POST',
-  url: `${JIRA_URL}${createEndPoint}`,
-  auth: {
-    username: JIRA_USERNAME,
-    password: JIRA_TOKEN
-  },
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: createData(payload)
-};
-
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
-  bot.postMessage(channel, slackMessageBuilders.createdMessage(), body);
-  console.log('body',body);
-});
-
-}
 
 // Initialize the Slack API client
 const client = new WebClient(process.env.TOKEN);
@@ -170,7 +143,7 @@ const openViewTicketModal = async (trigger_id) => {
       trigger_id: trigger_id,
       view: slackMessageBuilders.getViewTicketModal(),
     });
-    console.log('result',result);
+    console.log("result", result);
     return result;
   } catch (error) {
     console.error(error);
@@ -183,8 +156,8 @@ const handleUserChoiceResponse = async (actions, res, trigger_id) => {
     await openViewTicketModal(trigger_id);
   } else if (value === "create") {
     const result = await openCreateTicketModal(trigger_id);
-    console.log('result of create model', result)
-    res.send('creating ticket')
+    console.log("result of create model", result);
+    res.send("creating ticket");
   } else {
     bot.postMessage(channel.id, "not_a_valid_choice");
     res.send("not_a_valid_choice");
