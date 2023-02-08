@@ -8,60 +8,12 @@ const jiraService = require("/services/JiraServices");
 const config = setupConfig();
 const bot = setupSlackBot(config);
 require("dotenv").config();
-// const axios = require("axios");
-const fetch = require("node-fetch");
 
 const { WebClient } = require("@slack/web-api");
-const { channel } = require("slack-block-builder");
-
-const JIRA_URL = process.env.JIRA_URL;
-const JIRA_USERNAME = process.env.USER;
-const JIRA_TOKEN = process.env.JIRA_TOKEN;
-const createEndPoint = "rest/api/3/issue";
-
-const axiosConfig = {
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    Authorization:
-      "Basic " +
-      Buffer.from(JIRA_USERNAME + ":" + JIRA_TOKEN).toString("base64"),
-  },
-};
 
 const app = express();
 const router = express.Router();
 
-const createData = (payload) => {
-  const { summary, description, issueType } = payload;
-  return JSON.stringify({
-    fields: {
-      project: {
-        id: "10000",
-      },
-      summary: `${summary}`,
-      description: {
-        type: "doc",
-        version: 1,
-        content: [
-          {
-            type: "paragraph",
-            content: [
-              {
-                type: "text",
-                text: `${description}`,
-              },
-            ],
-          },
-        ],
-      },
-      labels: [`${issueType}`],
-      issuetype: {
-        id: "10001",
-      },
-    },
-  });
-};
 // hosted URL  : http://localhost:9000/.netlify/functions/api
 router.post("/", async (req, res) => {
   if (req.apiGateway.event.body) {
@@ -70,6 +22,7 @@ router.post("/", async (req, res) => {
     );
     console.log(botMessageBody);
     botMessageBody = JSON.parse(botMessageBody);
+    
     if (botMessageBody.type === "interactive_message") {
       console.log(botMessageBody.callback_id);
       const actions = botMessageBody.actions;
@@ -92,27 +45,13 @@ router.post("/", async (req, res) => {
         issueType,
       };
       console.log("payload", payload);
-      // const result = await jiraService.createTicket(payload);
-      // const response = await axios.post(
-      //   JIRA_URL + createEndPoint,
-      //   createData(payload),
-      //   axiosConfig
-      // );
 
-      const response = await fetch(JIRA_URL + createEndPoint, {
-        method: "post",
-        body: createData(payload),
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization:
-            "Basic " +
-            Buffer.from(JIRA_USERNAME + ":" + JIRA_TOKEN).toString("base64"),
-        },
-      });
-      const data = await response.json();
-
-      console.log(data);
+      try {
+         const result = await jiraService.createTicket(payload);
+         console.log('result', result)
+      } catch (error) {
+        console.log("hello error", error);
+      }
 
       res.status(200).end();
       console.log("after end");
@@ -167,4 +106,5 @@ const handleUserChoiceResponse = async (actions, res, trigger_id) => {
 app.use(`/.netlify/functions/api`, router);
 
 module.exports = app;
+
 module.exports.handler = serverless(app);
