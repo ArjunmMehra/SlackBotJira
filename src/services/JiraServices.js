@@ -3,7 +3,6 @@ var axios = require("axios");
 const JIRA_URL = process.env.JIRA_URL;
 const JIRA_USERNAME = process.env.USER;
 const JIRA_TOKEN = process.env.JIRA_TOKEN;
-const issueNo = "FI-2";
 
 const createEndPoint = "rest/api/3/issue";
 const getTaskEndPoint = `rest/api/3/issue/${issueNo}`;
@@ -51,8 +50,8 @@ var config = {
 
 module.exports = {
   async createTicket(payload) {
-    const { summary, description, issueType } = payload;
-    const response = await axios.post(
+    const { description, issueType } = payload;
+    const response = await axios.default.post(
       JIRA_URL + createEndPoint,
       createData(payload),
       config

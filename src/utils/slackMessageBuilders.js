@@ -27,12 +27,12 @@ module.exports = {
   },
   listBotMessage(user) {
     return {
-      text: `*Hey There What would you like me to do today? <@${user}>*`,
+      text: `*Hey What would you like me to do today? <@${user}>*`,
       attachments: [
         {
           text: {
             type: "mrkdwn",
-            text: `*Hey There What would you like me to do today? <@${user}>*`,
+            text: `*Hey What would you like me to do today? <@${user}>*`,
           },
           fallback: "You are unable to choose an option",
           callback_id: "user_choice",
@@ -139,7 +139,7 @@ module.exports = {
     };
   },
 
-  getCreateTicketModal() {
+  getCreateTicketModal(channel) {
     return {
       "type": "modal",
       "submit": {
@@ -169,6 +169,23 @@ module.exports = {
         },
         {
           "type": "divider"
+        },
+        {
+          "type": "section",
+          "block_id": "channel",
+          "text": {
+            "type": "mrkdwn",
+            "text": "Pick a channel from the dropdown list"
+          },
+          "accessory": {
+            "action_id": "channel_action",
+            "type": "channels_select",
+            "initial_channel": `${channel.id}`,
+            "placeholder": {
+              "type": "plain_text",
+              "text": "Select a channel"
+            }
+          }
         },
         {
           "type": "input",
@@ -238,7 +255,7 @@ module.exports = {
       ]
     }
   },
-  getViewTicketModal() {
+  getViewTicketModal(channel) {
     return {
       "type": "modal",
       "submit": {
@@ -257,6 +274,23 @@ module.exports = {
         "emoji": true
       },
       "blocks": [
+        {
+          "type": "section",
+          "block_id": "channel",
+          "text": {
+            "type": "mrkdwn",
+            "text": "Pick a channel from the dropdown list"
+          },
+          "accessory": {
+            "action_id": "channel_action",
+            "type": "channels_select",
+            "initial_channel": `${channel.id}`,
+            "placeholder": {
+              "type": "plain_text",
+              "text": "Select a channel"
+            }
+          }
+        },
         {
           "type": "input",
           "label": {
