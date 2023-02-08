@@ -5,7 +5,6 @@ const JIRA_USERNAME = process.env.USER;
 const JIRA_TOKEN = process.env.JIRA_TOKEN;
 
 const createEndPoint = "rest/api/3/issue";
-const getTaskEndPoint = `rest/api/3/issue/${issueNo}`;
 
 const createData = (payload) => {
   const { summary, description, issueType } = payload;
@@ -119,8 +118,9 @@ module.exports = {
     };
   },
 
-  async getTaskDetails() {
-    const response = await axios.get(JIRA_URL + getTaskEndPoint, config);
+  async getTaskDetails(payload) {
+    const getTaskEndPoint = `rest/api/3/issue/${payload.issueNo}`;
+    const response = await axios.default.get(JIRA_URL + getTaskEndPoint, config);
     console.log(response);
 
     return {
