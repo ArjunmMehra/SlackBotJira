@@ -20,7 +20,8 @@ router.post("/", async (req, res) => {
   if (req.apiGateway.event.body) {
     let botMessageBody = decodeURIComponent(
       req.apiGateway.event.body.replace("payload=", "")
-    );
+    ).replace(/\+/g, " ");
+
     console.log(botMessageBody);
     botMessageBody = JSON.parse(botMessageBody);
 
@@ -44,7 +45,6 @@ router.post("/", async (req, res) => {
       console.log("callback id", callback_id);
 
       if (callback_id === "create") {
-        
         const { channel, summary, desc, issue_type } = state.values;
         const channelId = channel.channel_action.selected_channel;
         const sum = summary.sum_input.value;
@@ -71,7 +71,6 @@ router.post("/", async (req, res) => {
           console.log("create error", error);
         }
       } else if (callback_id === "view") {
-
         const { channel, ticket_id } = state.values;
         const ticketId = ticket_id.ticket_id_input.value;
         const channelId = channel.channel_action.selected_channel;

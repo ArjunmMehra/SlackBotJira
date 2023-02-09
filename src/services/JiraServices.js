@@ -6,11 +6,6 @@ const JIRA_TOKEN = process.env.JIRA_TOKEN;
 
 const createEndPoint = "rest/api/3/issue";
 
-const titleCase = (st) => {
-  return st.toLowerCase().split(" ").reduce( (s, c) =>
-  s +""+(c.charAt(0).toUpperCase() + c.slice(1) +" "), '');
-}
-
 const createData = (payload) => {
   const { summary, description, issueType } = payload;
   return JSON.stringify({
@@ -36,10 +31,7 @@ const createData = (payload) => {
       },
       labels: [`${issueType}`],
       issuetype: {
-        name: titleCase(issueType),
-      },
-      assignee: {
-        name: "Arjun Mehra",
+        id: "10001",
       },
     },
   });
@@ -128,10 +120,7 @@ module.exports = {
 
   async getTaskDetails(payload) {
     const getTaskEndPoint = `rest/api/3/issue/${payload.issueNo}`;
-    const response = await axios.default.get(
-      JIRA_URL + getTaskEndPoint,
-      config
-    );
+    const response = await axios.default.get(JIRA_URL + getTaskEndPoint, config);
     console.log(response);
 
     return {
