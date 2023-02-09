@@ -142,6 +142,7 @@ module.exports = {
   getCreateTicketModal(channel) {
     return {
       "type": "modal",
+      "callback_id": "create",
       "submit": {
         "type": "plain_text",
         "text": "Submit",
@@ -258,6 +259,7 @@ module.exports = {
   getViewTicketModal(channel) {
     return {
       "type": "modal",
+      "callback_id": "view",
       "submit": {
         "type": "plain_text",
         "text": "Submit",
@@ -293,13 +295,15 @@ module.exports = {
         },
         {
           "type": "input",
+          "block_id": "ticket_id",
           "label": {
             "type": "plain_text",
             "text": ":wave: What is the ticket id?",
             "emoji": true
           },
           "element": {
-            "type": "plain_text_input"
+            "type": "plain_text_input",
+            "action_id": "ticket_id_input"
           }
         }
       ]

@@ -5,7 +5,7 @@ module.exports = {
     BOT_MESSAGE_TYPE: 'bot_message',
     WELCOME_COMMAND: 'hello',
     CREATE_TICKET: 'create',
-    GET_TICKET: 'get',
+    GET_TICKET: 'view',
     LIST_ISSUE_TYPE: 'list',
     GET_DATA: 'form',
     DESCRIPTION: 'des',

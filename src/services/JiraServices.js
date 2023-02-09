@@ -142,7 +142,7 @@ module.exports = {
             },
             {
               type: "mrkdwn",
-              text: `*Assigned To:*\n${response.data.fields.assignee.displayName}`,
+              text: `*Assigned To:*\n${response.data.fields.assignee?.displayName}`,
             },
           ],
         },
