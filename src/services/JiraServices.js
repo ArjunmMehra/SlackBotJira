@@ -49,7 +49,7 @@ var config = {
 
 module.exports = {
   async createTicket(payload) {
-    const { description, issueType } = payload;
+    const {summary, description, issueType } = payload;
     const response = await axios.default.post(
       JIRA_URL + createEndPoint,
       createData(payload),
@@ -75,8 +75,8 @@ module.exports = {
             },
             {
               type: "mrkdwn",
-              text: "*Created by:*\nAdmin",
-            },
+              text: `*Summary:*\n${summary}`,
+            }
           ],
         },
         {
@@ -99,11 +99,11 @@ module.exports = {
           fields: [
             {
               type: "mrkdwn",
-              text: "*Assigned To:*\nArjun Singh",
+              text: "*Assigned To:*\nArjun Mehra",
             },
             {
               type: "mrkdwn",
-              text: "*Estimated Completion:*\n32.0 hours (4 days)",
+              text: "*Status:*\nTo Do",
             },
           ],
         },

@@ -128,10 +128,11 @@ const handleUserChoiceResponse = async (actions, res, trigger_id, channel) => {
   const value = actions[0].value;
   if (value === "view") {
     await openViewTicketModal(trigger_id, channel);
+    res.send("getting ticket status...");
   } else if (value === "create") {
     const result = await openCreateTicketModal(trigger_id, channel);
     console.log("result of create model", result);
-    res.send("creating ticket");
+    res.send("creating ticket...");
   } else {
     bot.postMessage("C04KA1GD8SH", "not_a_valid_choice");
     res.send("not_a_valid_choice");

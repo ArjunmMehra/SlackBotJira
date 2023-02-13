@@ -228,26 +228,26 @@ module.exports = {
               {
                 "text": {
                   "type": "plain_text",
-                  "text": ":bug:Bug",
+                  "text": ":computer:Hardware",
                   "emoji": true
                 },
-                "value": "bug"
+                "value": "hardware"
               },
               {
                 "text": {
                   "type": "plain_text",
-                  "text": ":pencil:Task",
+                  "text": ":cd:Software",
                   "emoji": true
                 },
-                "value": "task"
+                "value": "software"
               },
               {
                 "text": {
                   "type": "plain_text",
-                  "text": ":scroll:Story",
+                  "text": ":floppy_disk:Others",
                   "emoji": true
                 },
-                "value": "story"
+                "value": "others"
               }
             ],
             "action_id": "issue_type_action"
